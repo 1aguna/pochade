@@ -1,19 +1,8 @@
 from matplotlib.image import imread
 import numpy as np
-from skimage import color as skic
-import colors
-from collections import Counter
-import colorgram
+# from skimage import color as skic
+# from .colors import xyz2lab, rgb2xyz, rgb2lab
 import random
-
-
-def set_bits(num, value):
-    """Set the index:th bit of v to 1 if x is truthy, else to 0, and return the new value."""
-    mask = 1 << index  # Compute mask, an integer with just bit 'index' set.
-    v &= ~mask  # Clear the bit indicated by the mask (if x is False)
-    if x:
-        v |= mask  # If x was True, set the bit indicated by the mask.
-    return v  # Return the result, we're done.
 
 
 def get_rgb(number):
@@ -126,16 +115,30 @@ def gla_slow(img, K=6):
 
 
 def closest_centroid(img, centroids):
+    """
+    Returns indices from each point to the closest centroid using the norm.
 
+    :param img: Reshaped np.array for the pixels in the image.
+    :param centroids: np.array of the coordinates for each centroid
+    :return: np.array containing the index of the cluster that each pixel is closest too
+    """
     dist = np.linalg.norm(img[:, np.newaxis, :] - centroids[np.newaxis, :, :], axis=2)
-    closest_centroid_index = np.argmin(dist)
+    closest_centroid_index = np.argmin(dist, axis=1)
 
     return closest_centroid_index
 
 
 def gla_fast(img, nclusters=6):
+    """
+    Run generalized Lloyd's algorithm to cluster colors.
+
+    :param img: Reshaped np.array for the pixels in the image
+    :param nclusters: The esired number of clusters
+    :return: Centroids representing the mean color for each cluster
+    """
     rand_idx = random.sample(range(img.shape[0]), nclusters)
     centroids = img[rand_idx]                       # randomly init clusters
+    # print(len(centroids))
     assignments = np.zeros(len(img), dtype=np.int32)   # prepare space for cluster assignments
 
     iters = 0
@@ -147,18 +150,35 @@ def gla_fast(img, nclusters=6):
 
         for c in range(nclusters):
             members = img[assignments == c]
-            centroids[c, :] = members.mean(axis=0)
+            centroids[c] = members.mean(axis=0)
 
         done = (iters == max_iters)     # TODO: update done condition for early stopping
                                         #  by checking convergence against tol
         iters += 1
+
     return centroids
 
+def palette(path, nccolors=6):
+    """
+    Calculate a color palette given a path to an image.
 
+    :param path: String for the file path
+    :param nccolors: Number of Desired colors
 
+    :return:A (ncolors x 3) np.array where each row is an rgb tuple
+    """
+    img = imread(path)
+
+    new_row = img.shape[0] * img.shape[1]
+    img = np.reshape(img, (new_row, img.shape[2]))
+
+    return gla_fast(img, ncolors)
+
+""""
 def main():
     from skimage import data
     from sklearn.cluster import KMeans
+    import colorthief
     import time
 
     path = "/Users/laguna/Desktop/index.jpg"
@@ -169,10 +189,12 @@ def main():
     # img = np.reshape(img, (img.shape[0] * img.shape[1], 3))
 
     # kmeans = KMeans(n_clusters=6).fit(img)
-    palette = gla(img)
+    palette = gla_fast(img)
     b = time.time()
+    print(palette)
     print(b-a)
 
     # print(kmeans.cluster_centers_)
     # before optimization 16.97 seconds
 main()
+"""
