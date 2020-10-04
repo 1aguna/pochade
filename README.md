@@ -1,4 +1,6 @@
 # Pochade (WIP)
+[![1aguna](https://circleci.com/gh/1aguna/pochade.svg?style=svg)](https://app.circleci.com/pipelines/github/1aguna)
+
 Python library for generating color palettes from images
 
 ## What is a pochade?
