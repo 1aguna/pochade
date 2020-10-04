@@ -7,4 +7,4 @@ class PochadeTest(unittest.TestCase):
         path = os.path.join("data", "index.jpg")
         palette = pochade.palette(path)
 
-        self.assertEqual(palette.shape[0], 6)pwd
+        self.assertEqual(palette.shape[0], 6)

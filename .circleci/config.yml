@@ -15,3 +15,17 @@ jobs:
             python3.8 -m venv venv
             . venv/bin/activate
             pip install -r requirements.txt
+
+     - run:
+          name: build pochade
+          command: |
+            . venv/bin/activate
+            pip install --progress-bar=off --upgrade pip 'setuptools<49.2.0'
+            pip install --progress-bar=off -r test_requirements.txt
+            pip install .
+
+      - run:
+          name: run nose tests
+          command: |
+            . venv/bin/activate
+            nosetests -vv --collect-only
