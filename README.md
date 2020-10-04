@@ -1,5 +1,8 @@
-# Pochade WIP
+# Pochade (WIP)
 Python library for generating color palettes from images
+
+## What is a pochade?
+A pochade is a small, fast painting that captures the colors and ambiance of a scene
 
 ## Features
 - Vectorized GLA for fast RGB clustering
