@@ -8,3 +8,6 @@ class PochadeTest(unittest.TestCase):
         palette = pochade.palette(path)
 
         self.assertEqual(palette.shape[0], 6)
+
+
+[![1aguna](https://circleci.com/gh/1aguna/pochade.svg?style=svg)](https://app.circleci.com/pipelines/github/1aguna)
