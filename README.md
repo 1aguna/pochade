@@ -2,7 +2,7 @@
 Python library for generating color palettes from images
 
 ## Features
-- Kmeans clustering
+- Vectorized GLA for fast RGB clustering
 - Conversion between sRGB, CIE XYZ and CIE Lab colorspaces 
 - "Rounding" algorithm using bit manipulation to bucket colors together
 
