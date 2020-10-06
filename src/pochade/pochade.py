@@ -20,14 +20,6 @@ def get_rgb(number):
     return lab
 
 
-def palette(img, ncolors=6, max_iters=100, method="kmeans"):
-    # img = np.array(Image.open(fpath))
-
-    counts = sample(img)
-    for color, _ in counts.most_common(ncolors):
-        print(get_rgb(color))
-
-
 def sample(img):
     mask = 0b111000  # mask for 3 most significant bits
     c = Counter()
